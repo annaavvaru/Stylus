@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://www.Stylus.com/services/ -->
+<html id="index-page" lang="en-us" __expr-val-dir="ltr" dir="ltr" class=" js no-mobile desktop no-ie services-section w-1600 gt-240 gt-320 gt-480 gt-640 gt-768 gt-800 gt-1024 gt-1280 gt-1440 lt-1680 lt-1920 no-portrait landscape gradient rgba opacity textshadow multiplebgs boxshadow borderimage borderradius cssreflections csstransforms csstransitions no-touch no-retina fontface domloaded webkit chrome win js"><head id="ctl00_Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./services_files/elqCfg.min.js"></script><script>(function blockPopupsFunc(popupBlockMessage, showNotification, extensionId, rules) {
+    var stndz = {
+        originalWindowOpen: window.open,
+        originalDocumentCreateElement: document.createElement,
+        originalDocumentCreateEvent: document.createEvent,
+        lastCreatedAnchor: undefined,
+        lastCreatedAnchorTime: undefined,
+        allowed: false
+    };
+
+    var popupRegexRules = null;
+    function isPopup(url) {
+        if (popupRegexRules == null) {
+            popupRegexRules = [];
+            for (var i = 0; i < rules.length; i++) {
+                popupRegexRules.push(new RegExp(rules[i], "i"));
+            }
+        }
+
+        for (var i = 0; i < popupRegexRules.length; i++) {
+            if (popupRegexRules[i].test(url))
+                return true;
+        }
+
+        return false;
+    }
+
+    var windowOpenAllowRegex = /^(http(s)?:)?\/\/([^\/]*\.)?(pinterest\.com|twitter\.com|paypal\.com|yahoo\.com|facebook\.com|linkedin\.com|salesforce\.com|amazon\.co|google\.co)/i;
+    var windowOpenAllowHosts = /^http(s):\/\/([^\/]*\.)?(search\.yahoo\.com|linkedin\.com|facebook\.com)/i;
+    window.open = function() {
+        var popupArguments = arguments;
+        var openPopupFunc = function() {
+            return stndz.originalWindowOpen.apply(window, popupArguments);
+        };
+
+        if (stndz.allowed)
+            return openPopupFunc();
+
+        var popupUrl = arguments.length >= 1 && arguments[0] && typeof arguments[0] == "string" ? arguments[0] : null;
+        var block = isPopup(popupUrl);
+        if (block) {
+            showPopupNotificationWindow('ad-popup', arguments, openPopupFunc);
+            return {};
+        }
+
+        var allow = windowOpenAllowRegex.test(popupUrl) || windowOpenAllowHosts.test(window.location.href);
+        if (allow) {
+            return openPopupFunc();
+        }
+
+        var targetName = arguments.length >= 2 ? arguments[1] : null;
+        if (targetName == '_parent' || targetName == '_self' || targetName == '_top')
+            return openPopupFunc();
+
+        if (!window.event)
+            return openPopupFunc();
+
+        if (popupUrl) {
+            try {
+                var windowOpenUrl = new URL(popupUrl);
+                if (windowOpenUrl.host.indexOf(window.location.host) > -1 || (windowOpenUrl.host != "" && window.location.host.indexOf(windowOpenUrl.host) > -1))
+                    return openPopupFunc();
+            } catch(e) { }
+        }
+
+        var currentTargetValid = window.event &&
+            window.event.currentTarget &&
+            window.event.currentTarget !== window &&
+            window.event.currentTarget !== document &&
+            window.event.currentTarget !== document.body;
+
+        var targetValid = window.event &&
+            window.event.target &&
+            window.event.target.tagName == 'A' &&
+            window.event.target.href.indexOf('http') == -1;
+
+        if (currentTargetValid || targetValid) {
+            return openPopupFunc();
+        }
+
+        if (showNotification)
+            showPopupNotificationWindow('not-user-initiated', arguments, openPopupFunc);
+
+        return {};
+    };
+
+    window.stndzStopPopupBlocking = function(iframeGuid) {
+        if (popupBlockMessage.iframeGuid == iframeGuid) {
+            stndz.allowed = true;
+        }
+    };
+
+    window.stndzResumePopupBlocking = function(iframeGuid) {
+        if (popupBlockMessage.iframeGuid == iframeGuid) {
+            stndz.allowed = false;
+        }
+    };
+
+    document.createElement = function() {
+        var element = stndz.originalDocumentCreateElement.apply(document, arguments);
+        if (element.tagName == 'A') {
+            stndz.lastCreatedAnchorTime = new Date();
+            stndz.lastCreatedAnchor = element;
+        }
+
+        return element;
+    };
+
+    var anchorPopupsExcludedHosts = { 'sh.st': true };
+    document.createEvent = function() {
+        if (!stndz.allowed && arguments[0].toLocaleLowerCase().indexOf('mouse') > -1 && stndz.lastCreatedAnchorTime && new Date() - stndz.lastCreatedAnchorTime < 50) {
+            if (anchorPopupsExcludedHosts[document.location.host]) {
+                stndz.lastCreatedAnchor.target = "_top";
+            } else if (windowOpenAllowRegex.test(stndz.lastCreatedAnchor.href) == false) {
+                var anchor = stndz.lastCreatedAnchor;
+                showPopupNotificationWindow('create-link', null, function() { anchor.click(); });
+                return null;
+            }
+        }
+
+        return stndz.originalDocumentCreateEvent.apply(document, arguments);
+    };
+
+    window.addEventListener("message", function(event) {
+        switch (event.data.type) {
+            case 'stndz-show-popup-notification':
+                if (window !== window.top)
+                    return;
+
+                stndz.stndzPopupActionWindow = event.source;
+                stndz.stndzPopupClicked = function(option) {
+                    stndz.hidePopupNotification();
+                    stndz.stndzPopupActionWindow.postMessage({type: 'stndz-popup-action', option: option}, event.origin);
+                };
+
+                if (stndz.popupNotificationOpen) {
+                    stndz.highlightPopupNotification();
+                } else if (window.popupNotificationOpen === false) { // if it was previously opened just show it, the delegate to open the new window was created above
+                    stndz.showPopupNotification();
+                } else {
+                    var notificationElement = createNotificationOnPage();
+
+                    setTimeout(function() {
+                        stndz.showPopupNotification();
+                    }, 0);
+
+                    stndz.showPopupNotification = function() {
+                        stndz.popupNotificationOpen = true;
+
+                        notificationElement.style.top = '0px';
+
+                        var hidePopupNotificationId;
+                        stndz.hidePopupNotification = function() {
+                            stndz.popupNotificationOpen = false;
+                            notificationElement.style.top = '-40px';
+                            notificationElement.style.height = '30px';
+                            clearTimeout(hidePopupNotificationId);
+                        };
+
+                        hidePopupNotificationId = setTimeout(stndz.hidePopupNotification, 30 * 1000);
+                        notificationElement.onmouseover = function() {
+                            clearTimeout(hidePopupNotificationId);
+                        };
+                    };
+
+                    var helpOpen = false;
+                    var originalBackground = notificationElement.style.background;
+                    stndz.highlightPopupNotification = function() {
+                        notificationElement.style.background = '#FFFBCC';
+                        setTimeout(function() {
+                            notificationElement.style.background = originalBackground;
+                        }, 1000);
+
+                        notificationElement.style.height = '120px';
+                        helpOpen = true;
+                    };
+
+                    stndz.togglePopupNotificationHelp = function() {
+                        notificationElement.style.height = helpOpen ? '30px' : '120px';
+                        helpOpen = !helpOpen;
+                    };
+                }
+
+                break;
+
+            case 'stndz-popup-action':
+                stndz.stndzPopupAction && stndz.stndzPopupAction(event.data.option);
+                break;
+        }
+    }, false);
+
+    function allowPopupsOnThisPage() {
+        stndz.allowed = true;
+    }
+
+    function showPopupNotificationWindow(blockType, args, openPopupFunc) {
+        if (!showNotification)
+            return;
+
+        stndz.stndzPopupAction = function(option) {
+            if (option == 'once' || option == 'allow') {
+                allowPopupsOnThisPage();
+                popupBlockMessage.arguments = args;
+                openPopupFunc && openPopupFunc();
+            } else {
+                showNotification = false;
+            }
+
+            popupBlockMessage.option = option;
+            var stndzActivateFrame = document.getElementById("stndz-activate");
+            var windowToPost = stndzActivateFrame ? stndzActivateFrame.contentWindow : window;
+            windowToPost.postMessage(popupBlockMessage, '*');
+        };
+
+        window.top.postMessage({
+            type: 'stndz-show-popup-notification',
+            iframeGuid: popupBlockMessage.iframeGuid,
+            blockType: blockType
+        }, '*');
+    }
+
+    function createNotificationOnPage() {
+        var style = document.createElement('style');
+        style.textContent = '.stndz-popup-notification {' +
+        'width: 670px;' +
+        'height: 30px;' +
+        'position: fixed;' +
+        'overflow: hidden;' +
+        'top: -40px;' +
+        'margin: 0 auto;' +
+        'z-index: 2147483647;' +
+        'left: 0px;' +
+        'right: 0px;' +
+        'background: rgb(240, 240, 240);' +
+        'border-radius: 0px 0px 5px 5px;' +
+        'border: solid 1px #999999;' +
+        'box-shadow: 0px 2px 5px #444444;' +
+        'border-top: none; ' +
+        'line-height: 31px;' +
+        'font-size: 12px;' +
+        'font-family: sans-serif;' +
+        'color: #59595c;' +
+        'text-align: center;' +
+        'direction: ltr;' +
+        'transition-duration: 500ms;}' +
+        '.stndz-button {' +
+        'padding: 3px 15px !important;' +
+        'border: solid 1px #a4a6aa !important;' +
+        'height: 25px !important;' +
+        'border-radius: 5px !important;' +
+        'background-color: #3058b0 !important;' +
+        'background: linear-gradient(#f5f5f5, #dfdfdf) !important;' +
+        'box-shadow: inset 0px 1px 0px #ffffff, inset 0 -1px 2px #acacac !important;' +
+        'color: #555555 !important;' +
+        'font-size: 12px !important;' +
+        'line-height: 16px !important;' +
+        'font-family: sans-serif !important;' +
+        'text-align: center !important;' +
+        'background-repeat: no-repeat !important;' +
+        'text-decoration: none !important;}' +
+        '.stndz-button:hover{' +
+        'background: linear-gradient(#eeeeee, #d1d1d1) !important;' +
+        'text-decoration: none !important;' +
+        'color: #555555 !important;}';
+        document.documentElement.appendChild(style);
+
+        var div = document.createElement('div');
+        div.setAttribute('class', 'stndz-popup-notification');
+        div.innerHTML = '<img src="chrome-extension://' + extensionId + '/views/web_accessible/images/icon.png" style="top: 5px; left: 5px;height: 20px; display: initial;position: absolute;">' +
+        '&nbsp;<b>Site Popup Blocked:</b>' +
+        '&nbsp;&nbsp;<a href="javascript:void(0)" id="stndz-popup-allow-once" class="stndz-button">Allow once</a>' +
+        '&nbsp;&nbsp;<a href="javascript:void(0)" id="stndz-popup-allow" class="stndz-button">Allow always</a>' +
+        '&nbsp;&nbsp;<a href="javascript:void(0)" id="stndz-popup-block" class="stndz-button">Block always</a>' +
+        '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" id="stndz-popup-help"><img src="chrome-extension://' + extensionId + '/views/web_accessible/images/help.png" style="opacity: 0.3; position: absolute; top: 7px; display: initial;right: 30px;" /></a>' +
+        '&nbsp;<a href="javascript:void(0)" id="stndz-popup-close"><img src="chrome-extension://' + extensionId + '/views/web_accessible/images/close.png" style="opacity: 0.3; position: absolute; top: 7px; display: initial;right: 7px;" /></a>' +
+        '<br /><div style="line-height: 22px; text-align: left; padding: 0px 5px 0px 5px; font-size: 11px;">The site tried to open a popup and Stands blocked it.' +
+        '<br />if you don\'t trust this site you should click <b>"Block always"</b>, if you do click <b>"Allow always"</b>.' +
+        '<br />If you\'re not sure click <b>"Allow once"</b> which will open the popup and pause popup blocking for the current page visit.' +
+        '<br />You can always change your settings in the application window.</div>';
+        document.body.appendChild(div);
+
+        document.getElementById("stndz-popup-allow-once").addEventListener("click", function(event) { event.stopPropagation(); stndz.stndzPopupClicked("once") }, true);
+        document.getElementById("stndz-popup-allow").addEventListener("click", function(event) { event.stopPropagation(); stndz.stndzPopupClicked("allow") }, true);
+        document.getElementById("stndz-popup-block").addEventListener("click", function(event) { event.stopPropagation(); stndz.stndzPopupClicked("block") }, true);
+        document.getElementById("stndz-popup-help").addEventListener("click", function(event) { event.stopPropagation(); stndz.togglePopupNotificationHelp() }, true);
+        document.getElementById("stndz-popup-close").addEventListener("click", function(event) { event.stopPropagation(); stndz.hidePopupNotification(); }, true);
+
+        return div;
+    }
+})({"type":"popup-user-action","iframeGuid":"53y10MHOi6fTYGXPObhl5sjZjUAh8N719JZC"},true, 'lgblnfidahcdcjddiepkckcfdhpknnjh', ["mediaserver","directrev\\.com","tradeadexchange\\.com","liveadexchanger\\.com","interyield\\.","ordingly\\.com","peritas247\\.info","goodbookbook\\.com","word-my\\.com","terraclicks\\.com","tracki112\\.com","popped","ahtamsu\\.ru","startnewtab\\.com","onclickads\\.net","europacash\\.com","wordkeyhelper\\.com","d1110e4\\.se","buzzonclick\\.com","adultadworld\\.com","3wr110\\.net","ads\\.xladzop\\.com","mtagmonetizationc\\.com","ad\\.propellerads\\.com","popmyads\\.com","popunderclick\\.com","pipeaota\\.com","expocrack\\.com","trafficforce\\.com","poprockets\\.info","trustedsurf\\.com","smartnewtab\\.com","wonderlandads\\.com","admediatracker\\.com","n\\d{3}adserv\\.com","adland\\.co","adexc\\.net","buzzadexchange\\.com","104\\.197\\.4\\.220","xmediaserve\\.com","popcash\\.net","adpop-\\d\\.com","adk2x\\.com","adplxmd\\.com"]);</script><style>iframe[id*="google_ads_iframe_"] { display: none !important; } </style><meta http-equiv="X-UA-Compatible" content="IE=10"><meta name="GENERATOR" content="Microsoft SharePoint"><meta http-equiv="Content-Language" content="EN"><meta http-equiv="Expires" content="0"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <!---->
+    <!--[if lt IE 9]>
+            <script src="/Style Library/JSFiles/responsive/html5.js"></script>		            			            
+    <![endif]-->
+    <script type="text/javascript" src="./services_files/head.min.js"></script>
+    <title>
+	
+   Stylus - Business Consulting Services | Technology Services | Cloud
+
+</title>
+
+<meta name="description" content="Stylus, a global technology leader, provides business consulting services, IT services, system integration, engineering and BPO services">
+<meta name="keywords" content="it consulting services, business it services, it solutions, technology services, business consulting services, it services, enterprise solutions, enterprise technology ">
+<meta name="author" content="Stylus Limited">
+<link rel="canonical" href="./services.html">
+
+    
+                     
+<link rel="shortcut icon" href="./stylus.png" type="image/vnd.microsoft.icon" id="favicon">
+
+     <!---->
+
+    <link href="./services_files/all.min.css" type="text/css" rel="stylesheet">
+
+    <!---->
+   <!---->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Social Buttons for Bootstrap" />
+    <meta property="og:description" content="Social Sign-In Buttons made in pure CSS based on Bootstrap and Font Awesome!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://lipis.github.io/bootstrap-social/" />
+    <meta property="og:image" content="http://lipis.github.io/bootstrap-social/assets/img/bootstrap-social.png" />
+
+   
+    <link href="./bootstrap-social-gh-pages/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="./bootstrap-social-gh-pages/assets/css/font-awesome.css" rel="stylesheet">
+    <link href="./bootstrap-social-gh-pages/assets/css/docs.css" rel="stylesheet" >
+
+    <link href="./bootstrap-social-gh-pages/assets/css/bootstrap-social.css" rel="stylesheet" >
+
+    <link href="./css/footer.css" type="text/css" rel="stylesheet">
+  
+    <!---->
+
+    <!---->
+    <link href="./services_files/font-awesome.min.css" type="text/css" rel="stylesheet"><link href="./services_files/changes.css" type="text/css" rel="stylesheet"><link href="./services_files/Infosyscms.css" type="text/css" rel="stylesheet"><link href="./services_files/print.css" type="text/css" rel="stylesheet">
+
+    <!--[if IE 9]>
+                <link rel="stylesheet" type="text/css" href="/Style Library/en-us/Core Styles/responsive/longscroll/ie9.css" /><link rel="stylesheet" type="text/css" href="/Style Library/en-us/Core Styles/responsive/longscroll/ie9_custom.css" />
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+    <link href="/Style Library/en-us/Core Styles/responsive/ie.css" rel="stylesheet" />
+    <![endif]-->
+
+    <script type="text/javascript" src="./services_files/jquery-1.11.3.min.js"></script>
+    <!--<span id="ctl00_SPSecurityTrimmedControl2">-->
+    <script type="text/javascript" src="./services_files/init.js"></script>
+    <script type="text/javascript" src="./services_files/digitaldata.js"></script>
+    <script src="./services_files/satelliteLib-1f4310b687525c365f31cac03791ca0d1bc3ad36.js"></script>
+    <!--</span>-->
+<script type="text/javascript" src="./services_files/all.min.js"></script><script type="text/javascript" src="./services_files/jquery.cycle.all.js"></script><script type="text/javascript" src="./services_files/ertefunction.js"></script><script type="text/javascript" src="./services_files/jquery.cookie.js"></script><script type="text/javascript" src="./services_files/jquery.placeholder.js"></script><script type="text/javascript" src="./services_files/jquery.prettyPhoto.js"></script><script type="text/javascript" src="./services_files/cmsinfy.js"></script><script type="text/javascript" src="./services_files/jquery-migrate-1.0.0.js"></script><script type="text/javascript" src="./services_files/imageMapResizer.min.js"></script><style type="text/css"></style><script src="./services_files/s-code-contents-fdcbac90dbeaad782185d1d975664de97caa8ed6.js"></script></head>
+<body class="desktop-devices">
+    <div style="display: none" class="print-logo">
+        <img src="./services_files/print-logo.png">
+    </div>
+    
+    <form method="post" action="./services.html" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm" class="BODY">
+<div class="aspNetHidden">
+<input type="hidden" name="__SPSCEditMenu" id="__SPSCEditMenu" value="true">
+<input type="hidden" name="_wpcmWpid" id="_wpcmWpid" value="">
+<input type="hidden" name="wpcmVal" id="wpcmVal" value="">
+<input type="hidden" name="MSOWebPartPage_PostbackSource" id="MSOWebPartPage_PostbackSource" value="">
+<input type="hidden" name="MSOTlPn_SelectedWpId" id="MSOTlPn_SelectedWpId" value="">
+<input type="hidden" name="MSOTlPn_View" id="MSOTlPn_View" value="0">
+<input type="hidden" name="MSOTlPn_ShowSettings" id="MSOTlPn_ShowSettings" value="False">
+<input type="hidden" name="MSOGallery_SelectedLibrary" id="MSOGallery_SelectedLibrary" value="">
+<input type="hidden" name="MSOGallery_FilterString" id="MSOGallery_FilterString" value="">
+<input type="hidden" name="MSOTlPn_Button" id="MSOTlPn_Button" value="none">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__REQUESTDIGEST" id="__REQUESTDIGEST" value="0xCEF61E5D8795BD86834158CED18D2B710BCC1031BB927FFFF89C958968CFC214FA2F2F195D26F651381571DF6A303AA0DD8246C85F96738D7229A05FF8BE6B96,27 May 2016 06:44:19 -0000">
+<input type="hidden" name="MSOSPWebPartManager_DisplayModeName" id="MSOSPWebPartManager_DisplayModeName" value="Browse">
+<input type="hidden" name="MSOSPWebPartManager_ExitingDesignMode" id="MSOSPWebPartManager_ExitingDesignMode" value="false">
+<input type="hidden" name="MSOWebPartPage_Shared" id="MSOWebPartPage_Shared" value="">
+<input type="hidden" name="MSOLayout_LayoutChanges" id="MSOLayout_LayoutChanges" value="">
+<input type="hidden" name="MSOLayout_InDesignMode" id="MSOLayout_InDesignMode" value="">
+<input type="hidden" name="_wpSelected" id="_wpSelected" value="">
+<input type="hidden" name="_wzSelected" id="_wzSelected" value="">
+<input type="hidden" name="MSOSPWebPartManager_OldDisplayModeName" id="MSOSPWebPartManager_OldDisplayModeName" value="Browse">
+<input type="hidden" name="MSOSPWebPartManager_StartWebPartEditingName" id="MSOSPWebPartManager_StartWebPartEditingName" value="false">
+<input type="hidden" name="MSOSPWebPartManager_EndWebPartEditing" id="MSOSPWebPartManager_EndWebPartEditing" value="false">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUBMA9kFgJmD2QWAgIBD2QWBAIBD2QWBAIID2QWGgIBDxYCHgdWaXNpYmxlaGQCAw8WAh8AaGQCBQ8WAh8AaGQCBw8WAh8AaGQCCQ8WAh8AaGQCCw8WAh8AaGQCDQ8WAh8AaGQCDw8WAh8AaGQCEQ8WAh8AaGQCEw8WAh8AaGQCFQ8WAh8AaGQCFw8WAh8AaGQCGQ8WAh8AaGQCCg9kFgJmD2QWAgIBDxYCHhNQcmV2aW91c0NvbnRyb2xNb2RlCymIAU1pY3Jvc29mdC5TaGFyZVBvaW50LldlYkNvbnRyb2xzLlNQQ29udHJvbE1vZGUsIE1pY3Jvc29mdC5TaGFyZVBvaW50LCBWZXJzaW9uPTE1LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPTcxZTliY2UxMTFlOTQyOWMBZAIFD2QWCgIBD2QWAgIDD2QWAgICD2QWAgIFD2QWAgIDDxYCHwBoFgJmD2QWBAICD2QWBgIBDxYCHwBoZAIDDxYCHwBoZAIFDxYCHwBoZAIDDw8WAh4JQWNjZXNzS2V5BQEvZGQCAw9kFgoCAQ9kFgQCAQ8WBB4EaHJlZgUYaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vHgVDbGFzcwULaW5meS1yLWxvZ29kAgUPFgIeCWlubmVyaHRtbAWJATxhIGNsYXNzPSdpbmZ5LXItc2VhcmNoX2ljb24nIGhyZWY9J2phdmFzY3JpcHQ6dm9pZCgwKTsnPjxpIGNsYXNzPSdmYSc+PGltZyBzcmM9Jy9zaXRlY29sbGVjdGlvbmltYWdlcy9yZXNwb25zaXZlL2ZhLXNlYXJjaC5wbmcnPjwvaT48L2E+ZAIDD2QWAgIBD2QWAmYPFgIeBFRleHQFkwc8ZGl2IGNsYXNzPSdpbmZ5LXItc2VhcmNoQXJlYScgc3R5bGU9J2Rpc3BsYXk6IG5vbmU7Jz48ZGl2IGNsYXNzPSdjb250YWluZXInPiAgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9J3Jvdyc+PGRpdiBjbGFzcz0nY29sLWxnLTEyIGNvbC1tZC0xMiBjb2wtc20tMTIgY29sLXhzLTEyJz4gIDxkaXYgY2xhc3M9J2luZnktci1zZWFyY2hDb250Jz4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxhIGhyZWY9JyMnPjxpbWcgc3JjPScvc2l0ZWNvbGxlY3Rpb25pbWFnZXMvcmVzcG9uc2l2ZS9pY29uX3NlYXJjaF93aGl0ZS5wbmcnIGNsYXNzPSdpY29uX3NlYXJjaF93aGl0ZSc+PC9hPiAgIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGlucHV0IHR5cGU9J3RleHQnIGlkPSd0eHRTZWFyY2hEZXNrdG9wJyAgY2xhc3M9J2lucHV0X3NlYXJjaCc+IA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGltZyBzcmM9Jy9zaXRlY29sbGVjdGlvbmltYWdlcy9yZXNwb25zaXZlL2Nsb3NlX3NlYXJjaC5wbmcnIGNsYXNzPSdjbG9zZV9zZWFyY2gnPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpbnB1dCBpZD0nYnRuU2VhcmNoRGVza3RvcCcgc3R5bGU9J2Rpc3BsYXk6IG5vbmUnIGNsYXNzPSdidG5TZWFyY2hPbW50ckRlc2t0b3AnIHR5cGU9J2J1dHRvbicgb25jbGljaz0nU2VhcmNoVXNlckNvbnRyb2xDbGljayhTZWFyY2hTaXRlUmVzdWx0UGFnZVVybCk7Jz48L2Rpdj48L2Rpdj48L2Rpdj48L2Rpdj48L2Rpdj5kAgUPZBYCAgMPFgIfBgW/AzxsaSBjbGFzcz0nZmlyc3QnPjxhIGhyZWY9J2h0dHBzOi8vd3d3LmluZm9zeXMuY29tL2Fib3V0LycgdGl0bGU9Jyc+QWJvdXQgVXM8L2E+PC9saT48bGk+PGEgaHJlZj0naHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vY29udGFjdC8nIHRpdGxlPScnPkNvbnRhY3QgVXM8L2E+PC9saT48bGk+PGEgaHJlZj0naHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vbmV3c3Jvb20vJyB0aXRsZT0nJz5OZXdzcm9vbTwvYT48L2xpPjxsaT48YSBocmVmPSdodHRwczovL3d3dy5pbmZvc3lzLmNvbS9pbnZlc3RvcnMvJyB0aXRsZT0nJz5JbnZlc3RvcnM8L2E+PC9saT48bGk+PGEgaHJlZj0naHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vY2FyZWVycy8nIHRpdGxlPScnPkNhcmVlcnM8L2E+PC9saT48bGk+PGEgaHJlZj0naHR0cDovL3d3dy5pbmZvc3lzYmxvZ3MuY29tJyB0aXRsZT0nJz5CbG9nczwvYT48L2xpPmQCBw8WBB8DBRhodHRwczovL3d3dy5pbmZvc3lzLmNvbS8fBAULaW5meS1yLWxvZ29kAgkPFgIfBQWJATxhIGNsYXNzPSdpbmZ5LXItc2VhcmNoX2ljb24nIGhyZWY9J2phdmFzY3JpcHQ6dm9pZCgwKTsnPjxpIGNsYXNzPSdmYSc+PGltZyBzcmM9Jy9zaXRlY29sbGVjdGlvbmltYWdlcy9yZXNwb25zaXZlL2ZhLXNlYXJjaC5wbmcnPjwvaT48L2E+ZAIFD2QWAgICD2QWDAIDDxYCHgVjbGFzcwUgaW5meS1yLXNlY3Rpb25fY2Fyb3VzZWwgbVRvcF8xNjAWAgIBD2QWAgIBEBYCHwELKwQBZGQCBQ9kFgICAQ9kFgICARAWAh8BCysEAWRkAgcPFgIfBwUPaW5meS1yLXdoaXRlLWJnFgICAQ9kFgICARAWAh8BCysEAWRkAgkPZBYCAgEPZBYCAgEQFgIfAQsrBAFkZAILDxYCHwcFD2luZnktci13aGl0ZS1iZxYCAgEPZBYCAgEQFgIfAQsrBAFkZAIND2QWAgIBD2QWAgIBEBYCHwELKwQBZGQCBw9kFgoCAQ8WAh8GBbwHPGRpdiBjbGFzcz0iaW5meS1yLXNlY3Rpb25fdHJlbmRpbmciPjxkaXYgY2xhc3M9ImNvbnRhaW5lciI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0icm93Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iY29sLWxnLTEyIGNvbC1tZC0xMiBjb2wtc20tMTIgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgaWQ9InRyZW5kaW5nX3RpdGxlIj4gVHJlbmRpbmcgQCBJbmZvc3lzPHNjcmlwdCBhc3luYyBzcmM9Imh0dHBzOi8vZDM2aGMwcDE4azFhb2MuY2xvdWRmcm9udC5uZXQvcGFnZXMvYTViNWU0LmpzIj48L3NjcmlwdD48ZGl2IGNsYXNzPSJhNWI1ZTQiIGRhdGEtaWQ9ImZvb3RlcndlYmNvcnAiIGRhdGEtY29sdW1ucz0iIiBkYXRhLWV4cGFuZD0idHJ1ZSIgIGRhdGEtY291bnQ9IjUiICBkYXRhLXBhZ2luYXRlPSJ0cnVlIiBkYXRhLXBlcnNvbmFsaXphdGlvbi1pZD0iNzQ3NzY2IiBzdHlsZT0iaGVpZ2h0OjUwMHB4O3dpZHRoOjEwMCU7Ij48L2Rpdj48L2Rpdj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj48L2Rpdj5kAgMPFgIfBgWLCjxkaXYgY2xhc3M9ImluZnktci1mb290ZXJfdG9wIj48ZGl2IGNsYXNzPSJjb250YWluZXIiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InJvdyI+PGRpdiBjbGFzcz0iY29sLWxnLTMgY29sLW1kLTMgY29sLXNtLTMgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJpbmZ5LXItY29udF9mdCI+DQogICAgICAgICAgICAgICAgICAgIAkJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL2NvbnRhY3QvUGFnZXMvaW5kZXguYXNweCIgY2xhc3M9ImZ0X2xpbmsiPjxpIGNsYXNzPSJmYSBmYS1waG9uZSBmYS1mdyI+PC9pPiZuYnNwOyBDb250YWN0IFVzPC9hPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+PGRpdiBjbGFzcz0iY29sLWxnLTMgY29sLW1kLTMgY29sLXNtLTMgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJpbmZ5LXItY29udF9mdCI+DQogICAgICAgICAgICAgICAgICAgIAkJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL2Fib3V0L1BhZ2VzL2xvY2F0aW9ucy5hc3B4IiBjbGFzcz0iZnRfbGluayI+PGkgY2xhc3M9ImZhIGZhLW1hcC1tYXJrZXIgZmEtZnciPjwvaT4mbmJzcDsgTG9jYXRlIFVzPC9hPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+PC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj48L2Rpdj5kAgUPFgIfBgW1IDxkaXYgY2xhc3M9ImluZnktci1mb290ZXJfY29udGVudCI+PGRpdiBjbGFzcz0iY29udGFpbmVyIj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJyb3ciPjxkaXYgY2xhc3M9ImNvbC1sZy0yIGNvbC1tZC0yIGNvbC1zbS0yIGNvbC14cy0xMiI+DQogICAgICAgICAgICAgICAgICAgIAkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJpbmZ5LXItZm9vdGVyX2gxIj5BYm91dDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHVsIGNsYXNzPSJpbmZ5LXItZm9vdGVyX3VsIj48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vYWJvdXQvUGFnZXMvaW5kZXguYXNweCIgdGl0bGU9IiI+T3ZlcnZpZXc8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vTGlua3MvcmVkaXJlY3RsaW5rLmFzcHg/aWQ9aW5mb3N5c2Jsb2dzLmFzcHgiIHRpdGxlPSIiPkJsb2dzPC9hPjwvbGk+PGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL25ld3Nyb29tLyIgdGl0bGU9IiI+Rm9yIFByZXNzPC9hPjwvbGk+PGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL2ludmVzdG9ycy8iIHRpdGxlPSIiPkZvciBJbnZlc3RvcnM8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vY2FyZWVycy8iIHRpdGxlPSIiPkZvciBKb2JzZWVrZXJzPC9hPjwvbGk+PC91bD48L2Rpdj48ZGl2IGNsYXNzPSJjb2wtbGctMiBjb2wtbWQtMiBjb2wtc20tMiBjb2wteHMtMTIiPg0KICAgICAgICAgICAgICAgICAgICAJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iaW5meS1yLWZvb3Rlcl9oMSI+U3Vic2lkaWFyaWVzPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dWwgY2xhc3M9ImluZnktci1mb290ZXJfdWwiPjxsaT48YSBocmVmPSJodHRwczovL3d3dy5pbmZvc3lzLmNvbS9MaW5rcy9yZWRpcmVjdGxpbmsuYXNweD9pZD1lZGdldmVydmUuYXNweCIgdGl0bGU9IiI+RWRnZVZlcnZlIFN5c3RlbXM8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vTGlua3MvcmVkaXJlY3RsaW5rLmFzcHg/aWQ9YnBvLmFzcHgiIHRpdGxlPSIiPkluZm9zeXMgQlBPPC9hPjwvbGk+PGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL2NvbnN1bHRpbmcvIiB0aXRsZT0iIj5JbmZvc3lzIENvbnN1bHRpbmc8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vbGlua3MvcmVkaXJlY3RsaW5rLmFzcHg/aWQ9aXBzLmFzcHgiIHRpdGxlPSIiPkluZm9zeXMgUHVibGljIFNlcnZpY2VzPC9hPjwvbGk+PGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL0xpbmtzL3JlZGlyZWN0bGluay5hc3B4P2lkPXd3dy5za2F2YS5jb20uYXNweCIgdGl0bGU9IiI+U2thdmEgU3lzdGVtczwvYT48L2xpPjwvdWw+PC9kaXY+PGRpdiBjbGFzcz0iY29sLWxnLTIgY29sLW1kLTIgY29sLXNtLTIgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZnktci1mb290ZXJfaDEiPlByb2dyYW1zPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dWwgY2xhc3M9ImluZnktci1mb290ZXJfdWwiPjxsaT48YSBocmVmPSJodHRwczovL3d3dy5pbmZvc3lzLmNvbS9pbmZvc3lzLWZvdW5kYXRpb24vIiB0YXJnZXQ9X2JsYW5rIHRpdGxlPSIiPkluZm9zeXMgRm91bmRhdGlvbjwvYT48L2xpPjxsaT48YSBocmVmPSJodHRwczovL3d3dy5pbmZvc3lzLmNvbS9MaW5rcy9yZWRpcmVjdGxpbmsuYXNweD9pZD1pbmZvc3lzLWZvdW5kYXRpb24tdXNhLmFzcHgiIHRpdGxlPSIiPkluZm9zeXMgRm91bmRhdGlvbiBVU0E8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vTGlua3MvcmVkaXJlY3RsaW5rLmFzcHg/aWQ9d3d3LmluZm9zeXMtc2NpZW5jZS1mb3VuZGF0aW9uLWNvbS5hc3B4IiB0aXRsZT0iIj5JbmZvc3lzIFNjaWVuY2UgRm91bmRhdGlvbjwvYT48L2xpPjxsaT48YSBocmVmPSJodHRwczovL3d3dy5pbmZvc3lzLmNvbS9sZWFkZXJzaGlwLWluc3RpdHV0ZS8iIHRpdGxlPSIiPkluZm9zeXMgTGVhZGVyc2hpcCBJbnN0aXR1dGU8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vc3VzdGFpbmFiaWxpdHkvIiB0aXRsZT0iIj5TdXN0YWluYWJpbGl0eTwvYT48L2xpPjwvdWw+PC9kaXY+PGRpdiBjbGFzcz0iY29sLWxnLTIgY29sLW1kLTIgY29sLXNtLTIgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZnktci1mb290ZXJfaDEiPlNvY2lhbDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHVsIGNsYXNzPSJpbmZ5LXItZm9vdGVyX3VsIj48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vTGlua3MvcmVkaXJlY3RsaW5rLmFzcHg/aWQ9VHdpdHRlci5hc3B4IiB0aXRsZT0iIj5Ud2l0dGVyPC9hPjwvbGk+PGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL0xpbmtzL3JlZGlyZWN0bGluay5hc3B4P2lkPUZhY2Vib29rLmFzcHgiIHRpdGxlPSIiPkZhY2Vib29rPC9hPjwvbGk+PGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmluZm9zeXMuY29tL0xpbmtzL3JlZGlyZWN0bGluay5hc3B4P2lkPWxpbmtlZGluLWluZm9zeXMuYXNweCIgdGl0bGU9IiI+TGlua2VkSW48L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vTGlua3MvcmVkaXJlY3RsaW5rLmFzcHg/aWQ9WW91dHViZS5hc3B4IiB0aXRsZT0iIj5Zb3VUdWJlPC9hPjwvbGk+PC91bD48L2Rpdj48ZGl2IGNsYXNzPSJjb2wtbGctMiBjb2wtbWQtMiBjb2wtc20tMiBjb2wteHMtMTIiPg0KICAgICAgICAgICAgICAgICAgICAJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iaW5meS1yLWZvb3Rlcl9oMSI+Jm5ic3A7PC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dWwgY2xhc3M9ImluZnktci1mb290ZXJfdWwiPjxsaT48YSBocmVmPSJodHRwczovL3d3dy5pbmZvc3lzLmNvbS90ZXJtcy1vZi11c2UvIiB0aXRsZT0iIj5UZXJtcyBvZiBVc2U8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vcHJpdmFjeS1zdGF0ZW1lbnQvIiB0aXRsZT0iIj5Qcml2YWN5IFN0YXRlbWVudDwvYT48L2xpPjxsaT48YSBocmVmPSJodHRwczovL3d3dy5pbmZvc3lzLmNvbS9zYWZlLWhhcmJvci1wcm92aXNpb24vIiB0aXRsZT0iIj5TYWZlIEhhcmJvciBQcm92aXNpb248L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vdHJhZGVtYXJrcy8iIHRpdGxlPSIiPlRyYWRlbWFya3M8L2E+PC9saT48bGk+PGEgaHJlZj0iaHR0cHM6Ly93d3cuaW5mb3N5cy5jb20vc2l0ZW1hcC8iIHRpdGxlPSIiPlNpdGUgTWFwPC9hPjwvbGk+PC91bD48L2Rpdj48L2Rpdj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PjwvZGl2PmQCBw8WAh8GBbYFPGRpdiBjbGFzcz0iaW5meS1yLWZvb3Rlcl9ib3R0b20iPjxkaXYgY2xhc3M9ImNvbnRhaW5lciI+DQogICAgICAgICAgICAJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0icm93Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iY29sLWxnLTEyIGNvbC1tZC0xMiBjb2wtc20tMTIgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZnktci1jb3B5cmlnaHQiPkNvcHlyaWdodCDCqSAyMDE2IEluZm9zeXMgTGltaXRlZDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PjwvZGl2PmQCCQ8WAh8GBbMGPGRpdiBjbGFzcz0iaW5meS1yLWZvb3Rlcl9ib3R0b20gaW5meS1yLWJlc3RWaWV3ZWQiPjxkaXYgY2xhc3M9ImNvbnRhaW5lciI+DQogICAgICAgICAgICAJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0icm93Ij4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iY29sLWxnLTEyIGNvbC1tZC0xMiBjb2wtc20tMTIgY29sLXhzLTEyIj4NCiAgICAgICAgICAgICAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZnktci1iZXN0Vmlld2VkVHh0Ij5UaGUgd2Vic2l0ZSBpcyBiZXN0IGV4cGVyaWVuY2VkIG9uIHRoZSBmb2xsb3dpbmcgdmVyc2lvbiAob3IgaGlnaGVyKSBvZiBDaHJvbWUgMzEsIEZpcmVmb3ggMjYsIFNhZmFyaSA2IGFuZCBJbnRlcm5ldCBFeHBsb3JlciA5IGJyb3dzZXJzPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+PC9kaXY+ZAIJD2QWAmYPFgIfBgXZDjxkaXYgY2xhc3M9InRpbGVfbWF5aWhlbHB1IiBydW5hdD0ic2VydmVyIiBpZD0idGlsZV9NSUhVIiBzdHlsZT0iZGlzcGxheTpub25lOyI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aW1nIHNyYz0iL3NpdGVjb2xsZWN0aW9uaW1hZ2VzL3Jlc3BvbnNpdmUvaWNvbl9tYWlsLnBuZyIgY2xhc3M9Imljb25fbWFpbCIgLz4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxzcGFuPk1heSBJIEhlbHAgeW91Pzwvc3Bhbj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9J21paHVfaWNvbnNDb250Jz4NCiAgICAgICAgCSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aW1nIHNyYz0nL3NpdGVjb2xsZWN0aW9uaW1hZ2VzL3Jlc3BvbnNpdmUvbWF4aW1pemVfbWlodS5wbmcnIGNsYXNzPSdtYXhpbWl6ZV90aWxlJyBpZD0nbWlodV9tYXhpbWl6ZV9wb3B1cCc+DQogICAgICAgIAkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGltZyBzcmM9Jy9zaXRlY29sbGVjdGlvbmltYWdlcy9yZXNwb25zaXZlL2Nsb3NlX21paHUucG5nJyBjbGFzcz0nY2xvc2VfbWlodV90aWxlJyBpZD0nY2xvc2VfbWlodV90aWxlJz4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj48ZGl2IGNsYXNzPSdwb3B1cF9tYXlpaGVscHVfMic+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9J2Nsb3NlX21paHVDb250Jz4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpbWcgc3JjPScvc2l0ZWNvbGxlY3Rpb25pbWFnZXMvcmVzcG9uc2l2ZS9jbG9zZV9taWh1LnBuZycgY2xhc3M9J2Nsb3NlX21paHVfMicgLz4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpbWcgc3JjPScvc2l0ZWNvbGxlY3Rpb25pbWFnZXMvcmVzcG9uc2l2ZS9pY29uX21haWwucG5nJyBjbGFzcz0naWNvbl9tYWlsJyAvPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSdtaWh1X3R4dENvbnQnPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHAgY2xhc3M9J3BfdGhhbmsnPlRoYW5rIHlvdSE8L3A+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cCBjbGFzcz0ncF90ZXh0Jz5PdXIgcmVwcmVzZW50YXRpdmUgd2lsbCBnZXQgaW4gdG91Y2ggd2l0aCB5b3Ugc2hvcnRseS48L3A+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2Pg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZGl2PmRkEoai6IWBaPKnOBgyIe9xhCvhQ3vhau7UNNdMv5hEGo8=">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./services_files/WebResource.axd" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+var MSOWebPartPageFormName = 'aspnetForm';
+var g_presenceEnabled = false;
+var g_wsaEnabled = false;
+var g_wsaQoSEnabled = false;
+var g_wsaQoSDataPoints = [];
+var g_wsaLCID = 1033;
+var g_wsaListTemplateId = 850;
+var g_wsaSiteTemplateId = 'BLANKINTERNET#2';
+var _fV4UI=true;var _spPageContextInfo = {webServerRelativeUrl: "\u002fservices", webAbsoluteUrl: "https:\u002f\u002fwww.Stylus.com\u002fservices", siteAbsoluteUrl: "https:\u002f\u002fwww.Stylus.com", serverRequestPath: "\u002fservices\u002fPages\u002findex.aspx", layoutsUrl: "_layouts\u002f15", webTitle: "Services", webTemplate: "53", tenantAppVersion: "0", webLogoUrl: "\u002f_layouts\u002fimages\u002ftitlegraphic.gif", webLanguage: 1033, currentLanguage: 1033, currentUICultureName: "en-US", currentCultureName: "en-US", clientServerTimeDelta: new Date("2016-05-27T06:44:19.5296520Z") - new Date(), siteClientTag: "309$$15.0.4569.1000", crossDomainPhotosEnabled:false, webUIVersion:15, webPermMasks:{High:16,Low:196609},pageListId:"{d5ad2970-5c75-4821-8d44-922d0cdc49b2}",pageItemId:2, pagePersonalizationScope:1, alertsEnabled:true, siteServerRelativeUrl: "\u002f", allowSilverlightPrompt:'True'};var L_Menu_BaseUrl="./services.html";
+var L_Menu_LCID="1033";
+var L_Menu_SiteTheme="null";
+document.onreadystatechange=fnRemoveAllStatus; function fnRemoveAllStatus(){removeAllStatus(true)};//]]>
+</script>
+
+<script src="./services_files/blank.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+UpdateFormDigest('\u002fservices', 1440000);return _spFormOnSubmitWrapper();
+return true;
+}
+//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BAB98CB3">
+</div>
+        <!---->
+
+
+                <div class="infy-r-overlay"></div>
+
+                
+
+<!---->
+
+<header class="infy-r-deskHeader infy-r-nav-down">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <a href="https://www.Stylus.com/" id="ctl00_headerinfosyscms1_DeviceChannelPanel1_logoNavDesktop" class="infy-r-logo"></a>
+                <div class="pull-right">
+                    <ul class="infy-r-menu_ul"><li class="infy-r-indus-menu"><a href="./industries.html">Industries</a></li><li class="infy-r-servi-menu active"><a href="./services.html">Services</a></li><li class="infy-r-prod-menu"><a href="./products.html">Products</a></li></ul><input type="hidden" id="currentSiteUrl_Desk" value="."><input type="hidden" id="currentPageUrl_Desk" value=".">
+                    <ul class="pull-right infy-r-icons_right">
+                        <li id="ctl00_headerinfosyscms1_DeviceChannelPanel1_liSearchDesktop"><a class="infy-r-search_icon" href="javascript:void(0);"><i class="fa"><img src="./services_files/fa-search.png"></i></a></li>
+                        <li id="userIconDesktop"> </li>
+                        <li><a class="infy-r-menu_icon" href="javascript:void(0);"><i class="fa ">
+                            <img src="./services_files/fa-bars.png"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="header-2" class="infy-r-main-page-head infy-r-services-bar-bg"><div class="container"><div class="row infy-r-position-relative"><div class="col-lg-12 col-md-12 col-sm-12"> <h2 class="infy-r-h2">Services</h2><ul class="infy-r-prod-sublist"><li><a href="./services.html#aikido">Aikido</a></li><li><a href="./services.html#consulting_services">Consulting Services</a></li><li><a href="./services.html#business_services">Business Services</a></li><li><a href="./services,html#technology_services">Technology Services</a></li><li><a href="./services.html#outsourcing_services">Outsourcing Services</a></li></ul></div></div> </div></div>
+</header>
+<!---->
+
+<div id="ctl00_headerinfosyscms1_SearchIntegration">
+    
+
+
+
+<script type="text/javascript"> var SearchSiteResultPageUrl = 'https://www.Stylus.com/search/Pages/index.aspx'; </script>
+
+<div class="infy-r-searchArea" style="display: none;"><div class="container">  
+                                                        <div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  <div class="infy-r-searchCont">
+                                                         <a href="./services.html#"><img src="./services_files/icon_search_white.png" class="icon_search_white"></a>   
+                                                         <input type="text" id="txtSearchDesktop" class="input_search"> 
+                                                         <img src="./services_files/close_search.png" class="close_search">
+                                                       <input id="btnSearchDesktop" style="display: none" class="btnSearchOmntrDesktop" type="button" onclick="SearchUserControlClick(SearchSiteResultPageUrl);"></div></div></div></div></div>
+
+
+ 
+    
+
+</div>
+
+
+<div class="infy-r-slidingHamMenu">
+    <div class="infy-r-closeCont">
+        <i class="infy-r-slidingClose">X</i>
+    </div>
+    <ul id="ctl00_headerinfosyscms1_ulSlidingMenu" class="infy-r-subMenu_ul">
+        <li class="first"><a href="./industries.html">Industries</a></li><li><a href="./services.html">Services</a></li><li><a href="./products.html">Products</a></li> <input type="hidden" id="currentSiteUrl_Mob" value="."><input type="hidden" id="currentPageUrl_Mob" value=".">
+        <li class="first"><a href="./about.html" title="">About Us</a></li><li><a href="./contactus.html" title="">Contact Us</a></li><li><a href="./newsroom.html" title="">Newsroom</a></li><li><a href="./investors.html" title="">Investors</a></li><li><a href="./careers.html" title="">Careers</a></li><li><a href="blogs.html" title="">Blogs</a></li>
+    <li><a href="javascript:void(0);">Select a country/region</a><div class="dd_cont bcdd_contStyle">
+                                             <div class="dd_val bc_text">Select Country</div>            
+                                               <div class="dd_option option_style" style="display: none;">
+                                                  <ul> <li><a href="javascript:void(0);">Select Country</a></li><li><a href="./country.html?country=Argentina">Argentina</a></li>
+												       <li><a href="/country.html?country=Australia">Australia</a></li>
+													   </ul></div></div></li></ul></div>
+
+
+<header class="infy-r-mobileHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="https://www.Stylus.com/" id="ctl00_headerinfosyscms1_logoNavMobile" class="infy-r-logo"></a>
+                <ul class="pull-right infy-r-icons_right">
+                    <li id="ctl00_headerinfosyscms1_liSearchMobile"><a class="infy-r-search_icon" href="javascript:void(0);"><i class="fa"><img src="./services_files/fa-search.png"></i></a></li>
+                    <li id="userIconMobile"> </li>
+                    <li><a class="infy-r-menu_icon" href="javascript:void(0);"><i class="fa ">
+                        <img src="./services_files/fa-bars.png"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="infy-r-page_header_mobile"><div class="container"><a class="infy-r-page_title" href="https://www.Stylus.com/services/">Services</a><div class="select2_pageParent"><select class="infy-r-custom-select infy-r-pageSelect select2-hidden-accessible" name="select" tabindex="-1" aria-hidden="true"><option value="aikido">Aikido</option><option value="consulting_services">Consulting Services</option><option value="business_services">Business Services</option><option value="technology_services">Technology Services</option><option value="outsourcing_services">Outsourcing Services</option></select><span class="select2 select2-container select2-container--customTheme" dir="ltr" style="width: 190px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-select-l1-container"><span class="select2-selection__rendered" id="select2-select-l1-container" title="Aikido">Aikido</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></div></div></div>
+</header>
+
+
+
+
+
+
+                <div id="DeltaPlaceHolderMain">
+	
+                    
+       
+                  <section id="section1" class="infy-r-section_carousel mTop_160">
+                       <div id="divauthRegion_RequiredFields_1" class="authRegion_RequiredFields group-body" style="display: block">  
+                             <div id="ctl00_PlaceHolderMain_InfosysRichHtmlFieldWrapper1">
+		
+                                  <div id="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_1__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_1_label"><div class="container"><div class="row"><div class="col-md-12 product-carousel"><div data-ride="carousel" class="carousel slide carousel-fade" id="services-carousel"><div class="carousel-inner" role="listbox"> <a class="item active" href="https://www.Stylus.com/IT-services/independent-validation-testing-services/features-opinions/Pages/zero-distance-business-value.aspx" title="Stylus Zero Distance helps APS deliver greater business value">
+          <div class="infy-r-gradient_carousel"></div>
+          <img src="./services_files/zero-distance-business-value.jpg" alt="Stylus Zero Distance helps APS deliver greater business value">
+          <div class="container"><div class="carousel-caption"><h3 class="infy-r-h3">Stylus Zero Distance helps APS deliver greater business value</h3></div></div>
+          </a> <a target="_blank" class="item" href="https://www.Stylus.com/links/redirectlink.aspx?id=informatica-world-2016.aspx" title="Stylus is a Platinum sponsor at Informatica World 2016">
+          <div class="infy-r-gradient_carousel"></div>
+          <img src="./services_files/informatica-world-2016.jpg" alt="Stylus is a Platinum sponsor at Informatica World 2016">
+          <div class="container"><div class="carousel-caption"><h3 class="infy-r-h3">Stylus is a Platinum sponsor at Informatica World 2016</h3></div></div>
+          </a> <a title="Sparking a customer-obsessed innovation culture" href="https://www.Stylus.com/newsroom/features/Pages/design-thinking-digital-innovation.aspx" class="item">
+          <div class="infy-r-gradient_carousel"></div>
+          <img alt="Sparking a customer-obsessed innovation culture" src="./services_files/designthinking-digital-innovation.jpg">
+          <div class="container"><div class="carousel-caption"><h3 class="infy-r-h3">Sparking a customer-obsessed innovation culture</h3></div></div>
+          </a> <a href="https://www.Stylus.com/newsroom/press-releases/Pages/industrial-internet-things-solutions.aspx" title="Stylus collaborates with GE to develop new solutions for the Industrial Internet of Things" class="item">
+          <div class="infy-r-gradient_carousel"></div>
+          <img alt="Stylus collaborates with GE to develop new solutions for the Industrial Internet of Things" src="./services_files/industrial-internet-things-solutions.png">
+          <div class="container"><div class="carousel-caption"><h3 class="infy-r-h3">Stylus collaborates with GE to develop new solutions for the Industrial Internet of Things</h3></div></div>
+          </a> </div>
+        <a data-slide="prev" role="button" href="https://www.Stylus.com/services/#services-carousel" class="left prev-icon carousel-control"> </a> <a data-slide="next" role="button" href="https://www.Stylus.com/services/#services-carousel" class="right next-icon carousel-control"> </a>
+        <div id="prod_cat" class="row"><ol class="carousel-indicators"><li data-slide-to="0" data-target="#services-carousel"></li><li data-slide-to="1" data-target="#services-carousel"></li><li data-slide-to="2" data-target="#services-carousel"></li><li data-slide-to="3" data-target="#services-carousel"></li></ol></div></div></div></div></div>
+</div>
+                                 
+	</div>		                
+                      </div>
+                      <menu class="ms-hide">
+		<ie:menuitem id="MSOMenu_Help" iconsrc="/_layouts/15/images/HelpIcon.gif" onmenuclick="MSOWebPartPage_SetNewWindowLocation(MenuWebPart.getAttribute(&#39;helpLink&#39;), MenuWebPart.getAttribute(&#39;helpMode&#39;))" text="Help" type="option" style="display:none">
+
+		</ie:menuitem>
+	</menu>
+                   </section>                 
+                  <section id="section2">
+                       <div id="divauthRegion_RequiredFields_3" class="authRegion_RequiredFields group-body" style="display: block">  
+                             <div id="ctl00_PlaceHolderMain_InfosysRichHtmlFieldWrapper2">
+		
+                                  <div id="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_2__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_2_label"><div class="container"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12"><h1 id="aikido" class="infy-r-mbottom infy-r-h1 infy-r-navigation">AiKiDō</h1><div class="infy-r-full-width-tile"><div class="infy-r-img-contr col-md-8 col-md-offset-4"> <a href="https://www.Stylus.com/services/aikido/pages/index.aspx" title="Next-Generation Services in Design Thinking, Platforms and Knowledge-Based IT"> <img src="./services_files/aikido-next-generation.png" class="infy-r-scale" alt="Next-Generation Services in Design Thinking, Platforms and Knowledge-Based IT"></a>&nbsp;</div><div class="infy-r-box-blue infy-r-box-serviceYellow infy-r-b1 infy-r-moveLeft"><div class="infy-r-inner-wrap"> <a href="https://www.Stylus.com/services/aikido/pages/index.aspx" class="infy-r-icon-wrap infy-r-file-icon" title="Next-Generation Services in Design Thinking, Platforms and Knowledge-Based IT"> <img src="./services_files/article-icon.png" alt="Article"></a> <a href="https://www.Stylus.com/services/aikido/pages/index.aspx" title="Next-Generation Services in Design Thinking, Platforms and Knowledge-Based IT">
+            <h2 class="infy-r-white infy-r-h2"> Next-Generation Services in Design Thinking, Platforms and Knowledge-Based IT </h2>
+            </a>
+            <p class="infy-r-white infy-r-marginT25">Services for non-disruptive renewal and simplification of existing landscapes; introduction of new offerings in a dynamic environment, and creating a culture of innovation... <a href="https://www.Stylus.com/services/aikido/pages/index.aspx" class="infy-r-read_more" title="Read more">Read more </a></p></div></div></div></div></div><div class="row"><div class="col-lg-4 col-md-4 col-sm-12"><div class="infy-r-cta-widget infy-r-bs-cat-list infy-r-aikido_moveTop"><ul><li> <a target="_blank" href="https://www.Stylus.com/Links/redirectlink.aspx?id=ai.aspx" title="Ai: Platforms and Platform as a service" class="infy-r-icon-list-arrow">Ai: Platforms and Platform as a service</a></li><li> <a target="_blank" href="https://www.Stylus.com/Links/redirectlink.aspx?id=ki.aspx" title="Ki: Knowledge-based management and evolution of landscapes" class="infy-r-icon-list-arrow">Ki: Knowledge-based management and evolution of landscapes</a></li><li> <a target="_blank" href="https://www.Stylus.com/Links/redirectlink.aspx?id=do.aspx" title="Do: Design Thinking and design-led initiatives" class="infy-r-icon-list-arrow">Do: Design Thinking and design-led initiatives</a></li></ul></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-video-widget"> <a href="https://www.Stylus.com/Links/redirectlink.aspx?id=do.aspx" title="&#39;Do&#39; helps clients find and define their own unique paths using Design Thinking" target="_blank"> <img src="./services_files/aikido-design-thinking.png" class="infy-r-scale" alt=""></a>
+        <div class="infy-r-video-info"> <a href="https://www.Stylus.com/Links/redirectlink.aspx?id=do.aspx" title="&#39;Do&#39; helps clients find and define their own unique paths using Design Thinking" class="infy-r-icon-wrap infy-r-file-icon" target="_blank"> <img src="./services_files/video-icon.png" alt="Video"> </a> <a href="https://www.Stylus.com/Links/redirectlink.aspx?id=do.aspx" title="&#39;Do&#39; helps clients find and define their own unique paths using Design Thinking" target="_blank">
+          <h4 class="infy-r-white infy-r-h4">'Do' helps clients find and define their own unique paths using Design Thinking</h4>
+          </a> </div></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-box-white"> <a href="https://www.Stylus.com/services/aikido/Pages/index.aspx#video-intro" title="Introduction to Ai Ki Do by Vishal Sikka" class="infy-r-icon-wrap infy-r-file-icon"> <img src="./services_files/video-icon.png" alt="Video"> </a>
+        <div class="infy-r-tile-info"> <a href="https://www.Stylus.com/services/aikido/Pages/index.aspx#video-intro" title="Introduction to Ai Ki Do by Vishal Sikka">
+          <h4 class="infy-r-h4">Introduction to Ai Ki Do by Vishal Sikka</h4>
+          </a> </div>
+        <a href="https://www.Stylus.com/services/aikido/Pages/index.aspx#video-intro" title="Introduction to Ai Ki Do by Vishal Sikka" class="infy-r-img-holder"> <img src="./services_files/aikido-vishal.png" class="infy-r-scale" alt="Introduction to Ai Ki Do by Vishal Sikka"> </a> </div></div></div></div>
+</div>
+                                 
+	</div>		                
+                      </div>
+                      
+                   </section>                 
+                  <section id="section3" class="infy-r-white-bg">
+                       <div id="divauthRegion_RequiredFields_5" class="authRegion_RequiredFields group-body" style="display: block">  
+                             <div id="ctl00_PlaceHolderMain_InfosysRichHtmlFieldWrapper3">
+		
+                                  <div id="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_3__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_3_label"><div class="container"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12"><h1 id="consulting_services" class="infy-r-mbottom infy-r-h1 infy-r-navigation">Consulting Services</h1><div class="infy-r-full-width-tile"><div class="infy-r-img-contr col-md-8 col-md-offset-4"> <a title="Design and achieve market-leading performance roadmaps" href="https://www.Stylus.com/consulting/Pages/index.aspx"> <img alt="Design and achieve market-leading performance roadmaps" src="./services_files/market-leading-performance-roadmaps.png" class="infy-r-scale"></a> &nbsp;</div><div class="infy-r-box-blue infy-r-box-serviceYellow infy-r-b1 infy-r-moveLeft"><div class="infy-r-inner-wrap"> <a title="Design and achieve market-leading performance roadmaps" href="https://www.Stylus.com/consulting/Pages/index.aspx" class="infy-r-icon-wrap infy-r-file-icon"> <img alt="Article" src="./services_files/article-icon.png"> </a> <a title="Design and achieve market-leading performance roadmaps" href="https://www.Stylus.com/consulting/Pages/index.aspx">
+            <h2 class="infy-r-white infy-r-h2">Design and achieve market-leading performance roadmaps</h2>
+            </a>
+            <p class="infy-r-white infy-r-marginT25">We help corporations develop unique solutions to address their complex business challenges and create value through sustainable innovation... <a title="Read more" href="https://www.Stylus.com/consulting/Pages/index.aspx" class="infy-r-read_more">Read more</a></p></div></div></div></div></div><div class="row"><div class="col-lg-4 col-md-4 col-sm-12"><div class="infy-r-cta-widget infy-r-bs-cat-list infy-r-cs_moveTop"><ul><li> <a href="https://www.Stylus.com/consulting/Pages/index.aspx" title="About Stylus Consulting" class="infy-r-icon-list-arrow">About Stylus Consulting</a></li><li> <a title="Strategy and Architecture" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-strategy-architecture.aspx" class="infy-r-icon-list-arrow">Strategy and Architecture</a></li><li> <a title="Business Transformation" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-transformation.aspx" class="infy-r-icon-list-arrow">Business Transformation</a></li><li> <a title="Enterprise Processes" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-processes.aspx" class="infy-r-icon-list-arrow">Enterprise Processes</a></li><li> <a title="Enterprise Applications" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-applications.aspx" class="infy-r-icon-list-arrow">Enterprise Applications</a></li><li> <a title="Digital Transformation" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-digital.aspx" class="infy-r-icon-list-arrow">Digital Transformation</a></li><li> <a title="Insights and Analytics" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-insights-analytics.aspx" class="infy-r-icon-list-arrow">Insights and Analytics</a></li><li> <a title="Change and Learning" href="https://www.Stylus.com/consulting/offerings/Pages/enterprise-change-learning.aspx" class="infy-r-icon-list-arrow">Change and Learning</a></li></ul></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-video-widget"> <a title="Design Thinking for cultural change and new approach to innovation" href="https://www.Stylus.com/newsroom/features/Pages/design-thinking-digital-innovation.aspx"> <img alt="Design Thinking for cultural change and new approach to innovation" src="./services_files/cultural-change-innovation.png" class="infy-r-scale"></a>
+        <div class="infy-r-video-info"> <a href="https://www.Stylus.com/newsroom/features/Pages/design-thinking-digital-innovation.aspx" title="Design Thinking for cultural change and new approach to innovation" class="infy-r-icon-wrap infy-r-file-icon"> <img alt="Article" src="./services_files/article-icon.png"> </a> <a title="Design Thinking for cultural change and new approach to innovation" href="https://www.Stylus.com/newsroom/features/Pages/design-thinking-digital-innovation.aspx">
+          <h4 class="infy-r-white infy-r-h4">Design Thinking for cultural change and new approach to innovation</h4>
+          </a> </div></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-grey-bg"> <a title="The magic of design thinking in reshaping business and IT processes" href="https://www.Stylus.com/consulting/features-opinions/Pages/magic-design-thinking.aspx" class="infy-r-icon-wrap infy-r-file-icon"> <img alt="Article" src="./services_files/article-icon.png"> </a>
+        <div class="infy-r-tile-info"> <a title="The magic of design thinking in reshaping business and IT processes" href="https://www.Stylus.com/consulting/features-opinions/Pages/magic-design-thinking.aspx">
+          <h4 class="infy-r-h4">The magic of design thinking in reshaping business and IT processes</h4>
+          </a> </div>
+     <a title="The magic of design thinking in reshaping business and IT processes" href="https://www.Stylus.com/consulting/features-opinions/Pages/magic-design-thinking.aspx" class="infy-r-img-holder"> <img alt="The magic of design thinking in reshaping business and IT processes" src="./services_files/magic-design-thinking.png" class="infy-r-scale"></a>
+      </div></div></div></div>
+</div>
+                                 
+	</div>		                
+                      </div>
+                      
+                   </section>
+                  <section id="section4">
+                       <div id="divauthRegion_RequiredFields_7" class="authRegion_RequiredFields group-body" style="display: block">  
+                             <div id="ctl00_PlaceHolderMain_InfosysRichHtmlFieldWrapper4">
+		
+                                  <div id="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_4__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_4_label"><div class="container"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12"><h1 class="infy-r-h1 infy-r-navigation" id="business_services">Business Services</h1></div></div><div class="row"><div class="col-lg-12 col-md-12 col-sm-12"><div class="infy-r-cta-widget infy-r-green-bg"><div class="infy-r-inner-wrap infy-r-inner-wrap-leftIcon"> <a class="infy-r-icon-wrap infy-r-file-icon infy-r-alignLeft" href="https://www.Stylus.com/links/redirectlink.aspx?id=bedigital.aspx" title="Be Digital. Be More" target="_blank"> <img src="./services_files/video-icon.png" alt="Video"> </a> <a href="https://www.Stylus.com/links/redirectlink.aspx?id=bedigital.aspx" title="Be Digital. Be More" target="_blank">
+          <h2 class="infy-r-white infy-r-h2">Be Digital. Be More</h2>
+          </a>
+          <h4 class="infy-r-white infy-r-h4">Stylus Study: Enterprises with a Systematic Digital Strategy Are More Likely to Invest 10-15% of Revenues in Digital Initiatives</h4></div></div></div><div class="col-lg-10 col-md-10 col-sm-10"><div class="infy-r-video-holder"><div class="video-wrapper">
+          <iframe width="945" height="532" frameborder="0" src="./services_files/wzNhnkaivFQ.html"></iframe>
+          &nbsp;</div>
+        &nbsp;</div>
+      &nbsp;</div></div><div class="row"><div class="col-lg-4 col-md-4 col-sm-12"><div class="infy-r-cta-widget infy-r-bs-cat-list"><ul><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/business-application-services/pages/index.aspx" title="Business Applications">Business Applications</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/data-analytics/pages/index.aspx" title="Data Analytics">Data Analytics</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/digital/pages/index.aspx" title="Digital">Digital</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/Oracle/pages/index.aspx" title="Oracle">Oracle</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/sap/pages/index.aspx" title="SAP">SAP</a></li></ul></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-box-white"> <a class="infy-r-icon-wrap infy-r-file-icon" href="https://www.Stylus.com/SAP/features-opinions/Pages/magic-quadrant-SAP-application.aspx" title="Stylus: Leader in Gartner’s Magic Quadrant for SAP Implementation Services, Worldwide"> <img src="./services_files/article-icon.png" alt="Article"> </a>
+        <div class="infy-r-tile-info"> <a href="https://www.Stylus.com/SAP/features-opinions/Pages/magic-quadrant-SAP-application.aspx" title="Stylus: Leader in Gartner’s Magic Quadrant for SAP Implementation Services, Worldwide">
+          <h4 class="infy-r-h4">Stylus: Leader in Gartner’s Magic Quadrant for SAP Implementation Services, Worldwide</h4>
+          </a> </div>
+        <a href="https://www.Stylus.com/SAP/features-opinions/Pages/magic-quadrant-SAP-application.aspx" class="infy-r-img-holder" title="Stylus: Leader in Gartner’s Magic Quadrant for SAP Implementation Services, Worldwide"> <img class="infy-r-scale" src="./services_files/sap-implementation-magic.png" alt="Stylus: Leader in Gartner’s Magic Quadrant for SAP Implementation Services, Worldwide"></a> </div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-box-white"> <a class="infy-r-icon-wrap infy-r-file-icon" href="https://www.Stylus.com/about/clients-speak/Pages/flying-high-on-analytics.aspx" title="Flying high on analytics with Bell Helicopter"> <img src="./services_files/video-icon.png" alt="Video"> </a>
+        <div class="infy-r-tile-info"> <a href="https://www.Stylus.com/about/clients-speak/Pages/flying-high-on-analytics.aspx" title="Flying high on analytics with Bell Helicopter">
+          <h4 class="infy-r-h4">Flying high on analytics with Bell Helicopter</h4>
+          </a> </div>
+        <a href="https://www.Stylus.com/about/clients-speak/Pages/flying-high-on-analytics.aspx" title="Flying high on analytics with Bell Helicopter" class="infy-r-img-holder"> <img class="infy-r-scale" src="./services_files/flying-high-bell-helicopter.png" alt="Flying high on analytics with Bell Helicopter"> </a> </div></div></div></div>
+</div>
+                                 
+	</div>		                
+                      </div>
+                      
+                   </section>
+                  <section id="section5" class="infy-r-white-bg">
+                       <div id="divauthRegion_RequiredFields_9" class="authRegion_RequiredFields group-body" style="display: block">  
+                             <div id="ctl00_PlaceHolderMain_InfosysRichHtmlFieldWrapper5">
+		
+                                  <div id="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_5__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_5_label"><div class="container"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12"><h1 class="infy-r-mbottom infy-r-h1 infy-r-navigation" id="technology_services">Technology Services</h1><div class="infy-r-full-width-tile"><div class="infy-r-img-contr col-md-8 col-md-offset-4"> <a href="https://www.Stylus.com/IT-services/independent-validation-testing-services/features-opinions/Pages/testing-services-worldwide.aspx" title="Stylus: Leader in 2015 Gartner Magic Quadrant for Application Testing Services Worldwide"> <img class="infy-r-scale" src="./services_files/application-testing-services-worldwide.png" alt="Stylus: Leader in 2015 Gartner Magic Quadrant for Application Testing Services Worldwide"></a>&nbsp;</div><div class="infy-r-box-blue infy-r-b1 infy-r-moveLeft infy-r-box-serviceYellow"><div class="infy-r-inner-wrap"> <a class="infy-r-icon-wrap infy-r-file-icon" href="https://www.Stylus.com/IT-services/independent-validation-testing-services/features-opinions/Pages/testing-services-worldwide.aspx" title="Stylus: Leader in 2015 Gartner Magic Quadrant for Application Testing Services Worldwide"> <img src="./services_files/article-icon.png" alt="Article"> </a> <a href="https://www.Stylus.com/IT-services/independent-validation-testing-services/features-opinions/Pages/testing-services-worldwide.aspx" title="Stylus: Leader in 2015 Gartner Magic Quadrant for Application Testing Services Worldwide">
+            <h2 class="infy-r-white infy-r-h2">Stylus: Leader in 2015 Gartner Magic Quadrant for Application Testing Services Worldwide</h2>
+            </a>
+            <p class="infy-r-white infy-r-marginT25">Recognized for its ability to execute and completeness of vision, Gartner has positioned Stylus as a ‘Leader’ in its Magic Quadrant on Application Testing Services Worldwide. Gartner assessed 17 of the leading application services providers on two primary criteria - “completeness of vision” and “ability to execute.”... <a class="infy-r-read_more" href="https://www.Stylus.com/IT-services/independent-validation-testing-services/features-opinions/Pages/testing-services-worldwide.aspx" title="Read more">Read more </a></p></div></div></div></div></div><div class="row"><div class="col-lg-4 col-md-4 col-sm-12"><div class="infy-r-cta-widget infy-r-bs-cat-list infy-r-ts_moveTop"><ul><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/IT-services/application-services/service-offerings/pages/index.aspx" title="Application Management">Application Management</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/infrastructure-services/pages/index.aspx" title="Cloud, Infrastructure and Security">Cloud, Infrastructure and Security</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/engineering-services/pages/index.aspx" title="Engineering Services">Engineering Services</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/mobility/pages/index.aspx" title="Enterprise Mobility">Enterprise Mobility</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/links/redirectlink.aspx?id=internet-of-things.aspx" target="_blank" title="Internet of Things (IoT)">Internet of Things (IoT)</a></li><li> <a class="infy-r-icon-list-arrow" href="https://www.Stylus.com/IT-services/independent-validation-testing-services/pages/index.aspx" title="Testing">Testing</a></li></ul></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-video-widget"> <a href="https://www.Stylus.com/infrastructure-services/features-opinions/Pages/challenger-data-center-outsourcing.aspx" title="Stylus: ‘Challenger’ in Gartner’s Magic Quadrant on Data Center Outsourcing and infrastructure utility services for North America"> <img class="infy-r-scale" src="./services_files/data-center-outsourcing.png" alt="Stylus: ‘Challenger’ in Gartner’s Magic Quadrant on Data Center Outsourcing and infrastructure utility services for North America"></a>
+        <div class="infy-r-video-info"> <a class="infy-r-icon-wrap infy-r-file-icon" href="https://www.Stylus.com/infrastructure-services/features-opinions/Pages/challenger-data-center-outsourcing.aspx" title="Stylus: ‘Challenger’ in Gartner’s Magic Quadrant on Data Center Outsourcing and infrastructure utility services for North America"> <img src="./services_files/article-icon.png" alt="Article"> </a> <a href="https://www.Stylus.com/infrastructure-services/features-opinions/Pages/challenger-data-center-outsourcing.aspx" title="Stylus: ‘Challenger’ in Gartner’s Magic Quadrant on Data Center Outsourcing and infrastructure utility services for North America">
+          <h4 class="infy-r-white infy-r-h4">Stylus: ‘Challenger’ in Gartner’s Magic Quadrant on Data Center Outsourcing and infrastructure utility services for North America</h4>
+          </a> </div></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-grey-bg"> <a class="infy-r-icon-wrap infy-r-file-icon" target="_blank" href="https://www.Stylus.com/engineering-services/case-studies/Documents/rapid-product-development.pdf" title="Knowledge-based engineering of aircraft components"> <img src="./services_files/article-icon.png" alt="Article"> </a>
+        <div class="infy-r-tile-info"> <a target="_blank" href="https://www.Stylus.com/engineering-services/case-studies/Documents/rapid-product-development.pdf" title="Knowledge-based engineering of aircraft components">
+          <h4 class="infy-r-h4">Knowledge-based engineering of aircraft components</h4>
+          </a> </div>
+        <a target="_blank" href="https://www.Stylus.com/engineering-services/case-studies/Documents/rapid-product-development.pdf" title="Knowledge-based engineering of aircraft components" class="infy-r-img-holder"> <img class="infy-r-scale" src="./services_files/aircraft-components.png" alt="Knowledge-based engineering of aircraft components"></a> 
+      </div></div></div></div>
+</div>
+                                 
+	</div>		                
+                      </div>
+                      
+                   </section>
+                  <section id="section6">
+                       <div id="divauthRegion_RequiredFields_11" class="authRegion_RequiredFields group-body" style="display: block">  
+                             <div id="ctl00_PlaceHolderMain_InfosysRichHtmlFieldWrapper6">
+		
+                                  <div id="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_6__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_INFOSYS_HTML_CONTENT_6_label"><div class="container"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12"><h1 class="infy-r-mbottom infy-r-h1 infy-r-navigation" id="outsourcing_services">Outsourcing Services</h1><div class="infy-r-full-width-tile"><div class="infy-r-img-contr col-md-8 col-md-offset-4"> <a title="BPO InLead Enabling Business Value Realization" target="_blank" href="https://www.Stylus.com/Links/redirectlink.aspx?id=BPO-InLead-blog.aspx"> <img alt="BPO InLead Enabling Business Value Realization" class="infy-r-scale" src="./services_files/business-value-realization.png"></a> &nbsp;</div><div class="infy-r-box-blue infy-r-box-serviceYellow infy-r-b1 infy-r-moveLeft"><div class="infy-r-inner-wrap"> <a title="BPO InLead Enabling Business Value Realization" target="_blank" class="infy-r-icon-wrap infy-r-file-icon" href="https://www.Stylus.com/Links/redirectlink.aspx?id=BPO-InLead-blog.aspx"> <img alt="Article" src="./services_files/article-icon(1).png"> </a> <a title="BPO InLead Enabling Business Value Realization" target="_blank" href="https://www.Stylus.com/Links/redirectlink.aspx?id=BPO-InLead-blog.aspx">
+            <h2 class="infy-r-white infy-r-h2">BPO InLead Enabling Business Value Realization</h2>
+            </a>
+            <p class="infy-r-white infy-r-marginT25">Discuss, debate and exchange ideas on latest trends and opportunities in the Business Process Outsourcing (BPO) landscape. Deliberate on adding business value to clients, vendors, employees and various other stakeholders to enhance customer satisfaction and sustain long-term partnerships.... <a title="Read more" class="infy-r-read_more" href="https://www.Stylus.com/Links/redirectlink.aspx?id=BPO-InLead-blog.aspx" target="_blank">Read more </a></p></div></div></div></div></div><div class="row"><div class="col-lg-4 col-md-4 col-sm-12"><div class="infy-r-cta-widget infy-r-bs-cat-list infy-r-oss_moveTop"><ul><li> <a title="Application Outsourcing" class="infy-r-icon-list-arrow" href="https://www.Stylus.com/IT-services/application-outsourcing-services/pages/index.aspx">Application Outsourcing</a></li><li> <a title="Business Process Outsourcing" class="infy-r-icon-list-arrow" href="https://www.Stylus.com/links/redirectlink.aspx?id=bpo.aspx" target="_blank">Business Process Outsourcing</a></li><li> <a title="Customer Service" class="infy-r-icon-list-arrow" href="https://www.Stylus.com/links/redirectlink.aspx?id=customer-service-outsourcing.aspx" target="_blank">Customer Service</a></li><li> <a class="infy-r-icon-list-arrow" title="Finance &amp; Accounting" href="https://www.Stylus.com/links/redirectlink.aspx?id=bpo-finance-accounting.aspx" target="_blank">Finance &amp; Accounting</a></li><li> <a title="Human Resources" class="infy-r-icon-list-arrow" href="https://www.Stylus.com/links/redirectlink.aspx?id=bpo-human-resources-outsourcing.aspx" target="_blank">Human Resources</a></li><li> <a title="Sourcing &amp; Procurement" class="infy-r-icon-list-arrow" href="https://www.Stylus.com/links/redirectlink.aspx?id=bpo-sourcing-procurement-outsourcing.aspx" target="_blank">Sourcing &amp; Procurement</a></li></ul></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-video-widget"> <a title="Stylus identified as a Leader in NelsonHall’s Procurement BPO NEAT" href="https://www.Stylus.com/links/redirectlink.aspx?id=procurement-bpo-neat.aspx" target="_blank"> <img alt="Stylus identified as a Leader in NelsonHall’s Procurement BPO NEAT" class="infy-r-scale" src="./services_files/bpo-neat.png"></a>
+        <div class="infy-r-video-info"> <a class="infy-r-icon-wrap infy-r-file-icon" title="Stylus identified as a Leader in NelsonHall’s Procurement BPO NEAT" href="https://www.Stylus.com/links/redirectlink.aspx?id=procurement-bpo-neat.aspx" target="_blank"> <img alt="Article" src="./services_files/article_icon.png"> </a> <a title="Stylus identified as a Leader in NelsonHall’s Procurement BPO NEAT" href="https://www.Stylus.com/links/redirectlink.aspx?id=procurement-bpo-neat.aspx" target="_blank">
+          <h4 class="infy-r-white infy-r-h4">Stylus identified as a Leader in NelsonHall’s Procurement BPO NEAT</h4>
+          </a> </div></div></div><div class="col-lg-4 col-md-4 col-sm-6"><div class="infy-r-cta-widget infy-r-box-white"> <a class="infy-r-icon-wrap infy-r-file-icon" href="https://www.Stylus.com/links/redirectlink.aspx?id=robotics-process-automation.aspx" target="_blank" title="Robotic process automation: The future is safe"> <img alt="Article" src="./services_files/article_icon.png"> </a>
+        <div class="infy-r-tile-info"> <a href="https://www.Stylus.com/links/redirectlink.aspx?id=robotics-process-automation.aspx" target="_blank" title="Robotic process automation: The future is safe">
+          <h4 class="infy-r-h4">Robotic process automation: The future is safe</h4>
+          </a> </div>
+        <a href="https://www.Stylus.com/links/redirectlink.aspx?id=robotics-process-automation.aspx" target="_blank" class="infy-r-img-holder" title="Robotic process automation: The future is safe"> <img alt="Robotic process automation: The future is safe" class="infy-r-scale" src="./services_files/robotic-process-automation.png"></a> </div></div></div></div>
+</div>
+                                 
+	</div>		                
+                      </div>
+                      
+                   </section> 
+     
+
+<div style="display:none" id="hidZone"></div>
+                
+</div>
+                
+
+                
+
+
+<div class="footer">
+  
+ <div class="container">
+ 
+      <div class="row">
+
+          <hr>
+
+          <div class="text-center">
+            <a class="btn btn-social-icon btn-adn" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-adn']);"><span class="fa fa-adn"></span></a>
+            <a class="btn btn-social-icon btn-bitbucket" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-bitbucket']);"><span class="fa fa-bitbucket"></span></a>
+            <a class="btn btn-social-icon btn-dropbox" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-dropbox']);"><span class="fa fa-dropbox"></span></a>
+            <a class="btn btn-social-icon btn-facebook" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-facebook']);"><span class="fa fa-facebook"></span></a>
+            <a class="btn btn-social-icon btn-flickr" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-flickr']);"><span class="fa fa-flickr"></span></a>
+            <a class="btn btn-social-icon btn-foursquare" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-foursquare']);"><span class="fa fa-foursquare"></span></a>
+            <a class="btn btn-social-icon btn-github" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-github']);"><span class="fa fa-github"></span></a>
+            <a class="btn btn-social-icon btn-google" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-google']);"><span class="fa fa-google"></span></a>
+            <a class="btn btn-social-icon btn-instagram" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-instagram']);"><span class="fa fa-instagram"></span></a>
+            <a class="btn btn-social-icon btn-linkedin" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-linkedin']);"><span class="fa fa-linkedin"></span></a>
+            <a class="btn btn-social-icon btn-microsoft" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-microsoft']);"><span class="fa fa-windows"></span></a>
+            <a class="btn btn-social-icon btn-odnoklassniki" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-odnoklassniki']);"><span class="fa fa-odnoklassniki"></span></a>
+            <a class="btn btn-social-icon btn-openid" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-openid']);"><span class="fa fa-openid"></span></a>
+            <a class="btn btn-social-icon btn-pinterest" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-pinterest']);"><span class="fa fa-pinterest"></span></a>
+            <a class="btn btn-social-icon btn-reddit" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-reddit']);"><span class="fa fa-reddit"></span></a>
+            <a class="btn btn-social-icon btn-soundcloud" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-soundcloud']);"><span class="fa fa-soundcloud"></span></a>
+            <a class="btn btn-social-icon btn-tumblr" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-tumblr']);"><span class="fa fa-tumblr"></span></a>
+            <a class="btn btn-social-icon btn-twitter" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-twitter']);"><span class="fa fa-twitter"></span></a>
+            <a class="btn btn-social-icon btn-vimeo" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-vimeo']);"><span class="fa fa-vimeo-square"></span></a>
+            <a class="btn btn-social-icon btn-vk" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-vk']);"><span class="fa fa-vk"></span></a>
+            <a class="btn btn-social-icon btn-yahoo" onclick="_gaq.push(['_trackEvent', 'btn-social-icon', 'click', 'btn-yahoo']);"><span class="fa fa-yahoo"></span></a>
+          </div>
+        </div>
+
+ <center>
+  <span class="copyright">Copyright © 2015	 Stylus Technologies, the Consulting Company of New Jersey.</span>
+  </center>
+</div>
+
+                <a href="./services.html" class="infy-r-scrollToTop"></a>
+                <div class="tile_mayihelpu" runat="server" id="tile_MIHU" style="display:none;">
+                                                            <img src="./services_files/icon_mail.png" class="icon_mail">
+                                                            <span>May I Help you?</span>
+                                                            <div class="mihu_iconsCont">
+        	                                                    <img src="./services_files/maximize_mihu.png" class="maximize_tile" id="mihu_maximize_popup">
+        	                                                    <img src="./services_files/close_mihu.png" class="close_mihu_tile" id="close_mihu_tile">
+                                                            </div>
+                                                        </div><div class="popup_mayihelpu_2">
+                                                                    <div class="close_mihuCont">
+                                                                        <img src="./services_files/close_mihu.png" class="close_mihu_2">
+                                                                    </div>
+                                                                    <img src="./services_files/icon_mail.png" class="icon_mail">
+                                                                    <div class="mihu_txtCont">
+                                                                        <p class="p_thank">Thank you!</p>
+                                                                        <p class="p_text">Our representative will get in touch with you shortly.</p>
+                                                                    </div>
+                                                                </div>
+
+
+
+                <!---->
+        
+            <script type="text/javascript">//<![CDATA[
+        var formDigestElement = document.getElementsByName('__REQUESTDIGEST')[0];
+        if (!((formDigestElement == null) || (formDigestElement.tagName.toLowerCase() != 'input') || (formDigestElement.type.toLowerCase() != 'hidden') ||
+            (formDigestElement.value == null) || (formDigestElement.value.length <= 0)))
+        {
+            formDigestElement.value = '0xCEF61E5D8795BD86834158CED18D2B710BCC1031BB927FFFF89C958968CFC214FA2F2F195D26F651381571DF6A303AA0DD8246C85F96738D7229A05FF8BE6B96,27 May 2016 06:44:19 -0000';
+            g_updateFormDigestPageLoaded = new Date();
+        }
+        //]]>
+        </script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+
+<script type="text/javascript">
+//<![CDATA[
+var _spFormDigestRefreshInterval = 1440000;window.g_updateFormDigestPageLoaded = new Date(); window.g_updateFormDigestPageLoaded.setDate(window.g_updateFormDigestPageLoaded.getDate() -5);var _fV4UI = true;
+function _RegisterWebPartPageCUI()
+{
+    var initInfo = {editable: false,isEditMode: false,allowWebPartAdder: false,listId: "{d5ad2970-5c75-4821-8d44-922d0cdc49b2}",itemId: 2,recycleBinEnabled: true,enableMinorVersioning: true,enableModeration: true,forceCheckout: true,rootFolderUrl: "\u002fservices\u002fPages",itemPermissions:{High:16,Low:196609}};
+    SP.Ribbon.WebPartComponent.registerWithPageManager(initInfo);
+    var wpcomp = SP.Ribbon.WebPartComponent.get_instance();
+    var hid;
+    hid = document.getElementById("_wpSelected");
+    if (hid != null)
+    {
+        var wpid = hid.value;
+        if (wpid.length > 0)
+        {
+            var zc = document.getElementById(wpid);
+            if (zc != null)
+                wpcomp.selectWebPart(zc, false);
+        }
+    }
+    hid = document.getElementById("_wzSelected");
+    if (hid != null)
+    {
+        var wzid = hid.value;
+        if (wzid.length > 0)
+        {
+            wpcomp.selectWebPartZone(null, wzid);
+        }
+    }
+};
+function __RegisterWebPartPageCUI() {
+ExecuteOrDelayUntilScriptLoaded(_RegisterWebPartPageCUI, "sp.ribbon.js");}
+_spBodyOnLoadFunctionNames.push("__RegisterWebPartPageCUI");var __wpmExportWarning='This Web Part Page has been personalized. As a result, one or more Web Part properties may contain confidential information. Make sure the properties contain information that is safe for others to read. After exporting this Web Part, view properties in the Web Part description file (.WebPart) by using a text editor such as Microsoft Notepad.';var __wpmCloseProviderWarning='You are about to close this Web Part.  It is currently providing data to other Web Parts, and these connections will be deleted if this Web Part is closed.  To close this Web Part, click OK.  To keep this Web Part, click Cancel.';var __wpmDeleteWarning='You are about to permanently delete this Web Part.  Are you sure you want to do this?  To delete this Web Part, click OK.  To keep this Web Part, click Cancel.';//]]>
+</script>
+</form>
+    <script type="text/javascript" src="./services_files/fotorama.js"></script>
+    <script type="text/javascript" src="./services_files/vplayer.js"></script>
+    <script type="text/javascript" src="./services_files/mktg.js"></script>
+    <script type="text/javascript" src="./services_files/respond.js"></script>
+
+    <script type="text/javascript">
+        try {
+            function ProcessImn() { }
+            function ProcessImnMarkers() { }
+        }
+        catch (e) { }
+
+    </script>
+
+    <!---->
+
+    <script type="text/javascript" src="./services_files/scripts.min.js"></script>
+    <script type="text/javascript">_satellite.pageBottom();</script>
+
+
+<iframe id="_71n7_modal_frame" src="./services_files/popUpModalEndpoint.html" style="display: none; position: fixed; left: 0px; right: 0px; top: 0px; bottom: 0px; width: 100%; height: 100%; border: none; z-index: 99999999;"></iframe></body></html>
